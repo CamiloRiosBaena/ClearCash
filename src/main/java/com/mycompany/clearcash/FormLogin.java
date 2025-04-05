@@ -16,8 +16,8 @@ public class FormLogin extends javax.swing.JFrame {
     public FormLogin() {
         initComponents();
         
-        Clases.CConexion objtoConexion = new Clases.CConexion();
-        objtoConexion.establecerConexion();
+        //Clases.CConexion objtoConexion = new Clases.CConexion();
+        //objtoConexion.establecerConexion();
     }
 
     /**
@@ -40,6 +40,7 @@ public class FormLogin extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(111, 128, 196));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
