@@ -14,7 +14,6 @@ import javax.swing.JTextArea;
 public class GraficadorCircular {
       
           private Map<String, Double> ingreso;
-          private DefaultPieDataset dataset = new DefaultPieDataset();
           
           public GraficadorCircular(){
               ingreso = new HashMap<>();
