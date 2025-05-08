@@ -14,11 +14,8 @@ import javax.swing.JPanel;
 
 public class GraficadorCircular {
       
-          private Map<String, Double> ingreso;
+          private Map<String, Double> ingreso = new HashMap<>();
           
-          public GraficadorCircular(){
-              ingreso = new HashMap<>();
-          }
           
           public void cargarIngresosDesdeArchivo(String usuario) {
             ingreso.clear(); 

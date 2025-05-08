@@ -35,7 +35,9 @@ public class CManejoArchivos {
     }
     
     public static void validarUsuarioExistente(JTextField usuario, JPasswordField contra, JFrame ventanaActual){
+        //Bandera para validar existencia de usuario 
         boolean existe = false;
+        //Extraccion de los datos de los JTextField
         String dato1 = usuario.getText();
         String dato2 = String.valueOf(contra.getPassword());
         
@@ -53,9 +55,11 @@ public class CManejoArchivos {
             System.out.println("Error al leer el archivo");
         }
         
+        //Comprobacion de existencia 
         if (existe) {
             JOptionPane.showMessageDialog(null, "Usuario existente");
         }
+        //Registro en caso de no existencia
         else {
             registrarUsuario(dato1, dato2);
             crearArchivo("BaseDeDatos\\"+ dato1 + "_datos.txt");
@@ -67,8 +71,13 @@ public class CManejoArchivos {
     }
     
    public static void registrarInfoUsuario(String usuario, String razon, double monto, String fecha, String tipo) {
+    //Se ubica en el archivo correspondiente al usuario logeado
     String rutaArchivo = "BaseDeDatos\\" + usuario + "_datos.txt";
+    
+    //Se declara un ArrayList para almacenar la informacion existente en el archivo
     List<String> lineas = new ArrayList<String>();
+    
+    //Bandera para verificar informacion previa
     boolean encontrado = false;
 
     try {
@@ -78,6 +87,7 @@ public class CManejoArchivos {
             String linea;
             while ((linea = lector.readLine()) != null) {
                 String[] partes = linea.split("\\|");
+                //Condicional para verificar la estructura de la información
                 if (partes.length == 4 && partes[0].equals(fecha) && partes[1].equals(razon) && partes[3].equals(tipo)) {
                     double montoExistente = Double.parseDouble(partes[2]);
                     double montoTotal = montoExistente + monto;
@@ -91,11 +101,14 @@ public class CManejoArchivos {
             lector.close();
         }
 
+        //Verificacion de exitencia de informacion coincidente 
         if (!encontrado) {
             lineas.add(fecha + "|" + razon + "|" + monto + "|" + tipo);
         }
 
         PrintWriter escritor = new PrintWriter(new FileWriter(rutaArchivo));
+        
+        //Se declara un for-each para escribir cada elemento del ArrayList en el archivo 
         for (String l : lineas) {
             escritor.println(l);
         }
@@ -109,6 +122,7 @@ public class CManejoArchivos {
        
     
     public static void ingreso(JTextField usuario, JPasswordField contra, JFrame ventanaActual){
+        //Bandera para validar información
         boolean correcto = false;
         
         String dato1 = usuario.getText();
@@ -119,6 +133,7 @@ public class CManejoArchivos {
             while((linea = entrada.readLine()) != null) {
                 String[] datos = linea.split(",");
                 
+                //Verificacion de la estructura cargada del archivo
                 if(datos.length == 2 && datos[0].equals(dato1) && datos[1].equals(dato2)){
                     correcto = true;  
                 }
@@ -127,6 +142,7 @@ public class CManejoArchivos {
             System.out.println("Error al leer el archivo");
         }
         
+        //Condicional correspondiente a la validacion de la información
         if (correcto){
             FormMainMenu objetoMenu = new FormMainMenu(dato1);
             objetoMenu.setVisible(true);
