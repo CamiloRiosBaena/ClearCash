@@ -128,8 +128,7 @@ public class CManejoArchivos {
         }
         
         if (correcto){
-            FormMainMenu objetoMenu = new FormMainMenu();
-            objetoMenu.setDato(dato1);
+            FormMainMenu objetoMenu = new FormMainMenu(dato1);
             objetoMenu.setVisible(true);
             ventanaActual.dispose();
         }

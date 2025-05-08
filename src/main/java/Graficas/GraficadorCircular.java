@@ -21,14 +21,20 @@ public class GraficadorCircular {
           }
           
           public void cargarIngresosDesdeArchivo(String usuario) {
-            ingreso.clear(); // Limpiamos para no duplicar si se llama más de una vez
+            ingreso.clear(); 
             try (BufferedReader br = new BufferedReader(new FileReader("BaseDeDatos\\"+usuario+"_datos.txt"))) {
                 String linea;
                 while ((linea = br.readLine()) != null) {
                     String[] partes = linea.split("\\|");
-                        String razon = partes[1];
-                        double monto = Double.parseDouble(partes[2]);
-                        ingreso.put(razon, ingreso.getOrDefault(razon, 0.0) + monto);    
+                       if(partes.length == 4 && partes[3].equals("ingreso")){
+                           try{
+                                String razon = partes[1];
+                                double monto = Double.parseDouble(partes[2]);
+                                ingreso.put(razon, ingreso.getOrDefault(razon, 0.0) + monto); 
+                           } catch(NumberFormatException e){
+                               System.out.println("Error al convertir monto en línea: " + linea);
+                           }
+                       }   
                 }
             } catch (IOException | NumberFormatException e) {
                 System.out.println("Error al leer el archivo");
@@ -43,7 +49,7 @@ public class GraficadorCircular {
           }
 
           public JPanel generarGrafico() {
-             DefaultPieDataset dataset = new DefaultPieDataset();
+            DefaultPieDataset dataset = new DefaultPieDataset();
 
         
             for (Map.Entry<String, Double> entrada : ingreso.entrySet()) {

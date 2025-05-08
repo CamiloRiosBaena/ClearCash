@@ -4,6 +4,8 @@
  */
 package com.mycompany.clearcash;
 
+import java.text.SimpleDateFormat;
+
 /**
  *
  * @author Camilo Rios
@@ -13,8 +15,9 @@ public class FormEgresos extends javax.swing.JFrame {
     /**
      * Creates new form FormEgresos
      */
-    public FormEgresos() {
+    public FormEgresos(String usuario) {
         initComponents();
+        nombreUsuariotxt.setText(usuario);
     }
 
     /**
@@ -28,6 +31,7 @@ public class FormEgresos extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
+        nombreUsuariotxt = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtEgreso = new javax.swing.JTextField();
@@ -51,19 +55,28 @@ public class FormEgresos extends javax.swing.JFrame {
             }
         });
 
+        nombreUsuariotxt.setText("jLabel5");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jButton2)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(nombreUsuariotxt)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(136, 136, 136)
+                .addGap(51, 51, 51)
+                .addComponent(nombreUsuariotxt)
+                .addGap(69, 69, 69)
                 .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -183,6 +196,7 @@ public class FormEgresos extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtEgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEgresoActionPerformed
@@ -192,10 +206,18 @@ public class FormEgresos extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Graficas.PanelTexto mostrar = new Graficas.PanelTexto();
         mostrar.MostrarInfo(jTextPane1, txtEgreso, txtRazonEgreso, txtFechaEgreso);
+        
+        double monto = Double.parseDouble(txtEgreso.getText());
+        
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+        String fecha = formato.format(txtFechaEgreso.getDate());
+        
+        Clases.CManejoArchivos objeto = new Clases.CManejoArchivos();
+        objeto.registrarInfoUsuario(nombreUsuariotxt.getText(), txtRazonEgreso.getText(), monto, fecha, "egreso");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        FormMainMenu objetoMenu = new FormMainMenu();
+        FormMainMenu objetoMenu = new FormMainMenu(nombreUsuariotxt.getText());
         objetoMenu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -230,7 +252,7 @@ public class FormEgresos extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormEgresos().setVisible(true);
+                //new FormEgresos().setVisible(true);
             }
         });
     }
@@ -246,6 +268,7 @@ public class FormEgresos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JLabel nombreUsuariotxt;
     private javax.swing.JTextField txtEgreso;
     private com.toedter.calendar.JDateChooser txtFechaEgreso;
     private javax.swing.JTextField txtRazonEgreso;

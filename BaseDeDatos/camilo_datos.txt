@@ -1,2 +1,4 @@
-
 07-05-2025|caca|600.0|ingreso
+08-05-2025|familia|400.0|ingreso
+09-05-2025|caca|500.0|ingreso
+06-05-2025|auto|300.0|egreso

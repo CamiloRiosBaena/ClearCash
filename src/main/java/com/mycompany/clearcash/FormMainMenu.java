@@ -13,12 +13,12 @@ import javax.swing.JPanel;
 public class FormMainMenu extends javax.swing.JFrame {
 
     private Graficas.GraficadorCircular objetoGrafica = new Graficas.GraficadorCircular();
-     private String dato;
     
-    public FormMainMenu() {
+    public FormMainMenu(String usuario) {
         initComponents();
         
-        objetoGrafica.cargarIngresosDesdeArchivo(nombreUsuariotxt.getText());
+        nombreUsuariotxt.setText(usuario); 
+        objetoGrafica.cargarIngresosDesdeArchivo(usuario);
         
         JPanel chartPanel = (JPanel) objetoGrafica.generarGrafico();
         chartPanel.setPreferredSize(new java.awt.Dimension(100, 200)); 
@@ -240,15 +240,11 @@ public class FormMainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        FormEgresos objetoEgreso = new FormEgresos();
+        FormEgresos objetoEgreso = new FormEgresos(nombreUsuariotxt.getText());
         objetoEgreso.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
     
-    public void setDato(String dato){
-        this.dato = dato;
-        nombreUsuariotxt.setText(dato);           
-    }
     /**
      * @param args the command line arguments
      */
@@ -279,7 +275,7 @@ public class FormMainMenu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormMainMenu().setVisible(true);
+                new FormMainMenu("sofia").setVisible(true);
             }
         });
     }
