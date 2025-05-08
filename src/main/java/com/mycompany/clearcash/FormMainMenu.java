@@ -4,8 +4,8 @@
  */
 package com.mycompany.clearcash;
 
+import java.text.SimpleDateFormat;
 import javax.swing.JPanel;
-import org.jfree.chart.ChartPanel;
 /**
  *
  * @author Camilo Rios
@@ -13,9 +13,21 @@ import org.jfree.chart.ChartPanel;
 public class FormMainMenu extends javax.swing.JFrame {
 
     private Graficas.GraficadorCircular objetoGrafica = new Graficas.GraficadorCircular();
+     private String dato;
     
     public FormMainMenu() {
         initComponents();
+        
+        objetoGrafica.cargarIngresosDesdeArchivo(nombreUsuariotxt.getText());
+        
+        JPanel chartPanel = (JPanel) objetoGrafica.generarGrafico();
+        chartPanel.setPreferredSize(new java.awt.Dimension(100, 200)); 
+
+
+        panelGrafico.removeAll();
+        panelGrafico.setLayout(new java.awt.BorderLayout());
+        panelGrafico.add(chartPanel, java.awt.BorderLayout.CENTER);
+        panelGrafico.validate();
     }
 
     /**
@@ -29,6 +41,8 @@ public class FormMainMenu extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
+        nombreUsuariotxt = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtIngreso = new javax.swing.JTextField();
@@ -51,19 +65,39 @@ public class FormMainMenu extends javax.swing.JFrame {
             }
         });
 
+        nombreUsuariotxt.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        nombreUsuariotxt.setForeground(new java.awt.Color(255, 255, 255));
+        nombreUsuariotxt.setText("jLabel5");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Bienvenido/a");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(0, 4, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(nombreUsuariotxt)
+                .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(173, 173, 173)
+                .addGap(19, 19, 19)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nombreUsuariotxt, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71)
                 .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -124,7 +158,6 @@ public class FormMainMenu extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -135,12 +168,13 @@ public class FormMainMenu extends javax.swing.JFrame {
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGap(54, 54, 54))))
-                            .addComponent(panelGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(panelGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(207, Short.MAX_VALUE))
+                .addContainerGap(225, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,11 +225,14 @@ public class FormMainMenu extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String razon = txtRazon.getText();
         double monto = Double.parseDouble(txtIngreso.getText());
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+        String fecha = formato.format(jDateChooser1.getDate());
         
-        objetoGrafica.agregarIngreso(razon, monto);
+        objetoGrafica.agregarIngreso(nombreUsuariotxt.getText(),razon, monto,fecha);
         
         JPanel chartPanel = (JPanel) objetoGrafica.generarGrafico();
-        
+        chartPanel.setPreferredSize(new java.awt.Dimension(100, 200)); 
+
         panelGrafico.removeAll();
         panelGrafico.setLayout(new java.awt.BorderLayout());
         panelGrafico.add(chartPanel, java.awt.BorderLayout.CENTER);
@@ -207,7 +244,11 @@ public class FormMainMenu extends javax.swing.JFrame {
         objetoEgreso.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    
+    public void setDato(String dato){
+        this.dato = dato;
+        nombreUsuariotxt.setText(dato);           
+    }
     /**
      * @param args the command line arguments
      */
@@ -251,8 +292,10 @@ public class FormMainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel nombreUsuariotxt;
     private javax.swing.JPanel panelGrafico;
     private javax.swing.JTextField txtIngreso;
     private javax.swing.JTextField txtRazon;
