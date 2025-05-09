@@ -154,7 +154,8 @@ public class FormLogin extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Clases.CManejoArchivos objetoIngreso = new Clases.CManejoArchivos();
-        objetoIngreso.ingreso(txtUsuario, txtContraseña, this);
+        objetoIngreso.setNombreUsuario(txtUsuario.getText());
+        objetoIngreso.ingreso(txtContraseña, this);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

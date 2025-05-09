@@ -13,9 +13,19 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
-public class CManejoArchivos {
+public class CManejoArchivos extends MovimientoFinanciero{
+
+    public CManejoArchivos() {
+    }
+
+    public CManejoArchivos(MovimientoFinanciero base) {
+        this.setNombreUsuario(base.getNombreUsuario());
+        this.setFecha(base.getFecha());
+        this.transaccion = base.getTransaccion();
+        this.setTipo(base.getTipo());
+    }
+    
     public static void crearArchivo(String nombreArchivo){
         File archivo = new File(nombreArchivo);
         
@@ -34,11 +44,11 @@ public class CManejoArchivos {
         }
     }
     
-    public static void validarUsuarioExistente(JTextField usuario, JPasswordField contra, JFrame ventanaActual){
+    public void validarUsuarioExistente(JPasswordField contra, JFrame ventanaActual){
         //Bandera para validar existencia de usuario 
         boolean existe = false;
         //Extraccion de los datos de los JTextField
-        String dato1 = usuario.getText();
+        String dato1 = super.getNombreUsuario();
         String dato2 = String.valueOf(contra.getPassword());
         
         try (BufferedReader entrada = new BufferedReader(new FileReader("BaseDeDatos\\usuarios.txt"))) {
@@ -70,62 +80,11 @@ public class CManejoArchivos {
         }
     }
     
-   public static void registrarInfoUsuario(String usuario, String razon, double monto, String fecha, String tipo) {
-    //Se ubica en el archivo correspondiente al usuario logeado
-    String rutaArchivo = "BaseDeDatos\\" + usuario + "_datos.txt";
-    
-    //Se declara un ArrayList para almacenar la informacion existente en el archivo
-    List<String> lineas = new ArrayList<String>();
-    
-    //Bandera para verificar informacion previa
-    boolean encontrado = false;
-
-    try {
-        File archivo = new File(rutaArchivo);
-        if (archivo.exists()) {
-            BufferedReader lector = new BufferedReader(new FileReader(archivo));
-            String linea;
-            while ((linea = lector.readLine()) != null) {
-                String[] partes = linea.split("\\|");
-                //Condicional para verificar la estructura de la información
-                if (partes.length == 4 && partes[0].equals(fecha) && partes[1].equals(razon) && partes[3].equals(tipo)) {
-                    double montoExistente = Double.parseDouble(partes[2]);
-                    double montoTotal = montoExistente + monto;
-                    String nuevaLinea = fecha + "|" + razon + "|" + montoTotal + "|" + tipo;
-                    lineas.add(nuevaLinea);
-                    encontrado = true;
-                } else {
-                    lineas.add(linea);
-                }
-            }
-            lector.close();
-        }
-
-        //Verificacion de exitencia de informacion coincidente 
-        if (!encontrado) {
-            lineas.add(fecha + "|" + razon + "|" + monto + "|" + tipo);
-        }
-
-        PrintWriter escritor = new PrintWriter(new FileWriter(rutaArchivo));
-        
-        //Se declara un for-each para escribir cada elemento del ArrayList en el archivo 
-        for (String l : lineas) {
-            escritor.println(l);
-        }
-        escritor.close();
-
-    } catch (IOException e) {
-        System.out.println("Error al procesar el archivo: " + e.getMessage());
-    }
-}
-
-       
-    
-    public static void ingreso(JTextField usuario, JPasswordField contra, JFrame ventanaActual){
+    public void ingreso(JPasswordField contra, JFrame ventanaActual){
         //Bandera para validar información
         boolean correcto = false;
         
-        String dato1 = usuario.getText();
+        String dato1 = super.getNombreUsuario();
         String dato2 = String.valueOf(contra.getPassword());
         
         try (BufferedReader entrada = new BufferedReader(new FileReader("BaseDeDatos\\usuarios.txt"))) {
@@ -152,4 +111,48 @@ public class CManejoArchivos {
             JOptionPane.showMessageDialog(null, "Informacion invalida\n\nRevisela y vuelva a intentar");
         }
     }
+    
+    public void registrarInfoUsuario(String razon, double monto) {
+    //Se declara un ArrayList para almacenar la informacion existente en el archivo
+    List<String> lineas = new ArrayList<String>();
+    
+    //Bandera para verificar informacion previa
+    boolean encontrado = false;
+
+        try (BufferedReader lector = new BufferedReader(new FileReader("BaseDeDatos\\"+super.getNombreUsuario()+"_datos.txt"))) {
+                String linea;
+
+                while ((linea = lector.readLine()) != null) {
+                    String[] partes = linea.split("\\|");
+                    //Condicional para verificar la estructura de la información
+                    if (partes.length == 4 && partes[0].equals(super.getFecha()) && partes[1].equals(razon) && partes[3].equals(super.getTipo())) {
+                        double montoExistente = Double.parseDouble(partes[2]);
+                        double montoTotal = montoExistente + monto;
+                        String nuevaLinea = super.getFecha() + "|" + razon + "|" + montoTotal + "|" + super.getTipo();
+                        lineas.add(nuevaLinea);
+                        encontrado = true;
+                    } else {
+                        lineas.add(linea);
+                    }
+                }
+                lector.close();
+
+            //Verificacion de exitencia de informacion coincidente 
+            if (!encontrado) {
+                lineas.add(super.getFecha() + "|" + razon + "|" + monto + "|" + super.getTipo());
+            }
+
+            PrintWriter escritor = new PrintWriter(new FileWriter("BaseDeDatos\\"+super.getNombreUsuario()+"_datos.txt"));
+
+            //Se declara un for-each para escribir cada elemento del ArrayList en el archivo 
+            for (String l : lineas) {
+                escritor.println(l);
+            }
+            escritor.close();
+
+        } catch (IOException e) {
+            System.out.println("Error al procesar el archivo: " + e.getMessage());
+        }
+    }
+ 
 }
