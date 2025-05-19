@@ -1,3 +1,4 @@
-07-05-2025|caca|600.0|ingreso
-08-05-2025|familia|600.0|ingreso
-09-05-2025|familia|400.0|ingreso
+1|07-05-2025|caca|600.0|ingreso
+2|09-05-2025|familia|5000.0|ingreso
+3|09-05-2025|familia|400.0|ingreso
+4|09-05-2025|Carrro|500.0|egreso

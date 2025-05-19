@@ -1,7 +1,7 @@
 package Clases;
 
-import com.mycompany.clearcash.FormLogin;
-import com.mycompany.clearcash.FormMainMenu;
+import Vista.FormLogin;
+import Vista.formMenuPrincipal;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,7 +22,8 @@ public class CManejoArchivos extends MovimientoFinanciero{
     public CManejoArchivos(MovimientoFinanciero base) {
         this.setNombreUsuario(base.getNombreUsuario());
         this.setFecha(base.getFecha());
-        this.transaccion = base.getTransaccion();
+        this.setRazon(base.getRazon());
+        this.setMonto(base.getMonto());
         this.setTipo(base.getTipo());
     }
     
@@ -103,7 +104,7 @@ public class CManejoArchivos extends MovimientoFinanciero{
         
         //Condicional correspondiente a la validacion de la información
         if (correcto){
-            FormMainMenu objetoMenu = new FormMainMenu(dato1);
+            formMenuPrincipal objetoMenu = new formMenuPrincipal(dato1);
             objetoMenu.setVisible(true);
             ventanaActual.dispose();
         }
@@ -112,23 +113,29 @@ public class CManejoArchivos extends MovimientoFinanciero{
         }
     }
     
-    public void registrarInfoUsuario(String razon, double monto) {
+    public void registrarInfoUsuario() {
     //Se declara un ArrayList para almacenar la informacion existente en el archivo
     List<String> lineas = new ArrayList<String>();
     
     //Bandera para verificar informacion previa
     boolean encontrado = false;
+    int idMaximo = 0;
 
         try (BufferedReader lector = new BufferedReader(new FileReader("BaseDeDatos\\"+super.getNombreUsuario()+"_datos.txt"))) {
                 String linea;
 
                 while ((linea = lector.readLine()) != null) {
                     String[] partes = linea.split("\\|");
+                    int idActual = Integer.parseInt(partes[0]);
+                    
+                    if(idActual > idMaximo){
+                        idMaximo = idActual;
+                    }
                     //Condicional para verificar la estructura de la información
-                    if (partes.length == 4 && partes[0].equals(super.getFecha()) && partes[1].equals(razon) && partes[3].equals(super.getTipo())) {
-                        double montoExistente = Double.parseDouble(partes[2]);
-                        double montoTotal = montoExistente + monto;
-                        String nuevaLinea = super.getFecha() + "|" + razon + "|" + montoTotal + "|" + super.getTipo();
+                    if (partes.length == 5 && partes[1].equals(super.getFecha()) && partes[2].equals(razon) && partes[4].equals(super.getTipo())) {
+                        double montoExistente = Double.parseDouble(partes[3]);
+                        double montoTotal = montoExistente + super.monto;
+                        String nuevaLinea = (idMaximo + 1) + "|" + super.getFecha() + "|" + super.razon + "|" + montoTotal + "|" + super.getTipo();
                         lineas.add(nuevaLinea);
                         encontrado = true;
                     } else {
@@ -139,7 +146,7 @@ public class CManejoArchivos extends MovimientoFinanciero{
 
             //Verificacion de exitencia de informacion coincidente 
             if (!encontrado) {
-                lineas.add(super.getFecha() + "|" + razon + "|" + monto + "|" + super.getTipo());
+                lineas.add((idMaximo + 1) + "|" + super.getFecha() + "|" + razon + "|" + monto + "|" + super.getTipo());
             }
 
             PrintWriter escritor = new PrintWriter(new FileWriter("BaseDeDatos\\"+super.getNombreUsuario()+"_datos.txt"));
@@ -148,11 +155,24 @@ public class CManejoArchivos extends MovimientoFinanciero{
             for (String l : lineas) {
                 escritor.println(l);
             }
-            escritor.close();
+            escritor.close();   
 
         } catch (IOException e) {
             System.out.println("Error al procesar el archivo: " + e.getMessage());
         }
     }
- 
+    
+    public void guardarMovimientosEnArchivo(String usuario, List<MovimientoFinanciero> transacciones) {
+        String archivo = "BaseDeDatos\\" + usuario + "_datos.txt"; // o usa super.getNombreUsuario() si estás en la clase hija
+
+        try (PrintWriter escritor = new PrintWriter(new FileWriter(archivo))) {
+            for (Clases.MovimientoFinanciero mov : transacciones) {
+                String linea = mov.getID() + "|" + mov.getFecha() + "|" + mov.getRazon() + "|" + mov.getMonto() + "|" + mov.getTipo();
+                escritor.println(linea);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar los cambios en el archivo: " + e.getMessage());
+        }
+    }
+
 }
