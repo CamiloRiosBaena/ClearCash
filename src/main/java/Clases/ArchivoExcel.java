@@ -2,6 +2,8 @@ package Clases;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
+import javax.swing.JOptionPane;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -13,7 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
 public class ArchivoExcel {
-    public void crearArchivo(){
+    public void crearArchivo(List<MovimientoFinanciero> transacciones){
         String home = System.getProperty("user.home");
         
         Workbook workbook = new XSSFWorkbook();
@@ -27,7 +29,7 @@ public class ArchivoExcel {
         headerStyle.setAlignment(HorizontalAlignment.CENTER);
 
         // Crear encabezados
-        String[] columnas = {"Fecha", "Razón", "Monto", "Tipo"};
+        String[] columnas = {"ID","Fecha", "Razón", "Monto", "Tipo"};
         Row headerRow = sheet.createRow(0);
 
         for (int i = 0; i < columnas.length; i++) {
@@ -36,28 +38,14 @@ public class ArchivoExcel {
             cell.setCellStyle(headerStyle);
         }
 
-        // Datos de ejemplo
-        Object[][] datos = {
-            {"2025-05-20", "Sueldo", 5000000, "Ingreso"},
-            {"2025-05-22", "Alquiler", 800000, "Egreso"},
-            {"2025-05-23", "Comida", 150000, "Egreso"}
-        };
-
-        // Agregar los datos
         int rowNum = 1;
-        for (Object[] fila : datos) {
+        for (MovimientoFinanciero aux : transacciones) {
             Row row = sheet.createRow(rowNum++);
-            for (int col = 0; col < fila.length; col++) {
-                Cell cell = row.createCell(col);
-
-                if (fila[col] instanceof String) {
-                    cell.setCellValue((String) fila[col]);
-                } else if (fila[col] instanceof Integer) {
-                    cell.setCellValue((Integer) fila[col]);
-                } else if (fila[col] instanceof Double) {
-                    cell.setCellValue((Double) fila[col]);
-                }
-            }
+            row.createCell(0).setCellValue(aux.getID());
+            row.createCell(1).setCellValue(aux.getFecha());
+            row.createCell(2).setCellValue(aux.getRazon());
+            row.createCell(3).setCellValue(aux.getMonto());
+            row.createCell(4).setCellValue(aux.getTipo());
         }
 
         // Autoajustar tamaño de columnas
@@ -68,6 +56,7 @@ public class ArchivoExcel {
         // Guardar archivo
         try (FileOutputStream fileOut = new FileOutputStream(home+"\\Downloads\\movimientos.xlsx")) {
             workbook.write(fileOut);
+            JOptionPane.showMessageDialog(null,"Archivo creado exitosamente en: "+home+"\\Donwloads","Error",JOptionPane.INFORMATION_MESSAGE);
             workbook.close();
         } catch (IOException e) {
             e.printStackTrace();

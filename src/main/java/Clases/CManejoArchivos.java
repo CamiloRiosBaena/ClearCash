@@ -14,17 +14,24 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
-public class CManejoArchivos extends MovimientoFinanciero{
-
+public class CManejoArchivos{
+    
+    private static final String rutaArchivo = "BaseDeDatos\\usuarios.txt";
+    private MovimientoFinanciero movimiento;
+    
     public CManejoArchivos() {
     }
 
-    public CManejoArchivos(MovimientoFinanciero base) {
-        this.setNombreUsuario(base.getNombreUsuario());
-        this.setFecha(base.getFecha());
-        this.setRazon(base.getRazon());
-        this.setMonto(base.getMonto());
-        this.setTipo(base.getTipo());
+    public CManejoArchivos(MovimientoFinanciero movimiento) {
+        this.movimiento = movimiento;
+    }
+
+    public MovimientoFinanciero getMovimiento() {
+        return movimiento;
+    }
+
+    public void setMovimiento(MovimientoFinanciero movimiento) {
+        this.movimiento = movimiento;
     }
     
     public static void crearArchivo(String nombreArchivo){
@@ -38,7 +45,7 @@ public class CManejoArchivos extends MovimientoFinanciero{
     }
     
     public static void registrarUsuario(String usuario, String contraseña) {
-        try (PrintWriter escritor = new PrintWriter(new FileWriter("BaseDeDatos\\usuarios.txt", true))) {
+        try (PrintWriter escritor = new PrintWriter(new FileWriter(rutaArchivo, true))) {
             escritor.println(usuario + "," + contraseña);
         } catch (IOException e) {
             System.out.println("Error al escribir en el archivo: " + e.getMessage());
@@ -49,10 +56,10 @@ public class CManejoArchivos extends MovimientoFinanciero{
         //Bandera para validar existencia de usuario 
         boolean existe = false;
         //Extraccion de los datos de los JTextField
-        String dato1 = super.getNombreUsuario();
+        String dato1 = movimiento.getNombreUsuario();
         String dato2 = String.valueOf(contra.getPassword());
         
-        try (BufferedReader entrada = new BufferedReader(new FileReader("BaseDeDatos\\usuarios.txt"))) {
+        try (BufferedReader entrada = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;
             while((linea = entrada.readLine()) != null) {
                 String[] datos = linea.split(",");
@@ -68,7 +75,7 @@ public class CManejoArchivos extends MovimientoFinanciero{
         
         //Comprobacion de existencia 
         if (existe) {
-            JOptionPane.showMessageDialog(null, "Usuario existente");
+            JOptionPane.showMessageDialog(null, "Usuario existente","Error",JOptionPane.ERROR_MESSAGE);
         }
         //Registro en caso de no existencia
         else {
@@ -85,7 +92,7 @@ public class CManejoArchivos extends MovimientoFinanciero{
         //Bandera para validar información
         boolean correcto = false;
         
-        String dato1 = super.getNombreUsuario();
+        String dato1 = movimiento.getNombreUsuario();
         String dato2 = String.valueOf(contra.getPassword());
         
         try (BufferedReader entrada = new BufferedReader(new FileReader("BaseDeDatos\\usuarios.txt"))) {
@@ -113,57 +120,74 @@ public class CManejoArchivos extends MovimientoFinanciero{
         }
     }
     
-    public void registrarInfoUsuario() {
-    //Se declara un ArrayList para almacenar la informacion existente en el archivo
-    List<String> lineas = new ArrayList<String>();
-    
-    //Bandera para verificar informacion previa
-    boolean encontrado = false;
-    int idMaximo = 0;
+    public void registrarInfoUsuario(List<MovimientoFinanciero> aux) {
+        List<String> lineas = new ArrayList<>();
+        boolean[] encontrados = new boolean[aux.size()]; 
+        int idMaximo = 0;
 
-        try (BufferedReader lector = new BufferedReader(new FileReader("BaseDeDatos\\"+super.getNombreUsuario()+"_datos.txt"))) {
-                String linea;
+        String archivo = "BaseDeDatos\\" + movimiento.getNombreUsuario() + "_datos.txt";
 
-                while ((linea = lector.readLine()) != null) {
-                    String[] partes = linea.split("\\|");
-                    int idActual = Integer.parseInt(partes[0]);
-                    
-                    if(idActual > idMaximo){
-                        idMaximo = idActual;
-                    }
-                    //Condicional para verificar la estructura de la información
-                    if (partes.length == 5 && partes[1].equals(super.getFecha()) && partes[2].equals(razon) && partes[4].equals(super.getTipo())) {
+        try (BufferedReader lector = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+
+            while ((linea = lector.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+
+                if (partes.length < 5) {
+                    continue;
+                }
+
+                int idActual = Integer.parseInt(partes[0]);
+                if (idActual > idMaximo) {
+                    idMaximo = idActual;
+                }
+
+                boolean lineaModificada = false;
+                for (int i = 0; i < aux.size(); i++) {
+                    MovimientoFinanciero mov = aux.get(i);
+
+                    if (partes[1].equals(mov.getFecha()) &&
+                        partes[2].equals(mov.getRazon()) &&
+                        partes[4].equals(mov.getTipo())) {
+
                         double montoExistente = Double.parseDouble(partes[3]);
-                        double montoTotal = montoExistente + super.monto;
-                        String nuevaLinea = (idMaximo + 1) + "|" + super.getFecha() + "|" + super.razon + "|" + montoTotal + "|" + super.getTipo();
+                        double montoTotal = montoExistente + mov.getMonto();
+                        String nuevaLinea = (idActual) + "|" + mov.getFecha() + "|" + mov.getRazon() + "|" + montoTotal + "|" + mov.getTipo();
                         lineas.add(nuevaLinea);
-                        encontrado = true;
-                    } else {
-                        lineas.add(linea);
+                        encontrados[i] = true;
+                        lineaModificada = true;
+                        break;
                     }
                 }
-                lector.close();
 
-            //Verificacion de exitencia de informacion coincidente 
-            if (!encontrado) {
-                lineas.add((idMaximo + 1) + "|" + super.getFecha() + "|" + razon + "|" + monto + "|" + super.getTipo());
+                if (!lineaModificada) {
+                    lineas.add(linea);
+                }
             }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo: " + e.getMessage());
+        }
 
-            PrintWriter escritor = new PrintWriter(new FileWriter("BaseDeDatos\\"+super.getNombreUsuario()+"_datos.txt"));
+        for (int i = 0; i < aux.size(); i++) {
+            if (!encontrados[i]) {
+                MovimientoFinanciero mov = aux.get(i);
+                idMaximo++;
+                String nuevaLinea = idMaximo + "|" + mov.getFecha() + "|" + mov.getRazon() + "|" + mov.getMonto() + "|" + mov.getTipo();
+                lineas.add(nuevaLinea);
+            }
+        }
 
-            //Se declara un for-each para escribir cada elemento del ArrayList en el archivo 
+        try (PrintWriter escritor = new PrintWriter(new FileWriter(archivo))) {
             for (String l : lineas) {
                 escritor.println(l);
             }
-            escritor.close();   
-
         } catch (IOException e) {
-            System.out.println("Error al procesar el archivo: " + e.getMessage());
+            System.out.println("Error al escribir en el archivo: " + e.getMessage());
         }
     }
     
-    public void guardarMovimientosEnArchivo(String usuario, List<MovimientoFinanciero> transacciones) {
-        String archivo = "BaseDeDatos\\" + usuario + "_datos.txt"; // o usa super.getNombreUsuario() si estás en la clase hija
+    public void guardarMovimientosEnArchivo(List<MovimientoFinanciero> transacciones) {
+        String archivo = "BaseDeDatos\\" + movimiento.getNombreUsuario() + "_datos.txt"; 
 
         try (PrintWriter escritor = new PrintWriter(new FileWriter(archivo))) {
             for (Clases.MovimientoFinanciero mov : transacciones) {

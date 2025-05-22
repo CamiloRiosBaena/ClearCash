@@ -10,9 +10,9 @@ import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.JPanel;
 
-public class GraficadorCircular extends Clases.MovimientoFinanciero{
+public class GraficadorCircular {
           
-          public JPanel generarGrafico(List<MovimientoFinanciero> grafica) {
+          public JPanel generarGrafico(List<MovimientoFinanciero> grafica, String tipo) {
             DefaultPieDataset dataset = new DefaultPieDataset();
 
             Map<String, Double> mapaMontos = new HashMap<>();
@@ -29,9 +29,9 @@ public class GraficadorCircular extends Clases.MovimientoFinanciero{
             }
 
             JFreeChart chart = ChartFactory.createPieChart(
-                "Distribución de " + super.getTipo(),
+                "Distribución de " + tipo,
                 dataset,
-                true, true, true
+                true, false, false
             );
 
             return new ChartPanel(chart);

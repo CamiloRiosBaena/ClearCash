@@ -1,4 +1,2 @@
-1|07-05-2025|caca|600.0|ingreso
-2|07-05-2025|auto|4000.0|egreso
-3|09-05-2025|familia|400.0|ingreso
-4|09-05-2025|Carrro|500.0|egreso
+1|07-05-2025|caca|2000.0|ingreso
+2|23-05-2025|alquiler|40000.0|egreso

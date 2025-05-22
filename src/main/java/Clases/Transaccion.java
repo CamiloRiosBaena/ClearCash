@@ -48,17 +48,4 @@ public class Transaccion {
     public void setMonto(double monto) {
         this.monto = monto;
     }
-    
-    public void MostrarInfo(JTextPane panel, JTextField monto, JTextField razon){
-        String egreso = monto.getText();
-        String motivo = razon.getText();
-        
-        if(panel == null){
-            panel.setText("Monto: "+egreso+"\n"+"Razon: "+motivo+"\n"+"Fecha: "+fecha+"\n\n");
-        }
-        else{
-            String cadena = panel.getText();
-            panel.setText(cadena + "Monto: "+egreso+"\n"+"Razon: "+motivo+"\n"+"Fecha: "+fecha+"\n\n");
-        }
-    }
 }

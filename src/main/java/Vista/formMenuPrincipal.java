@@ -20,6 +20,7 @@ public class formMenuPrincipal extends javax.swing.JFrame {
     private Clases.GraficadorCircular objetoGraficaIngresos = new Clases.GraficadorCircular();
     private Clases.GraficadorCircular objetoGraficaEgresos = new Clases.GraficadorCircular();
     private Clases.MovimientoFinanciero objetoMovimiento = new Clases.MovimientoFinanciero();
+    List<Clases.MovimientoFinanciero> transacciones;
     private DefaultTableModel dtm = new DefaultTableModel();
     private String NombreUsuario;
     
@@ -30,22 +31,19 @@ public class formMenuPrincipal extends javax.swing.JFrame {
         
         LocalDate fechaActual = LocalDate.now();
         int mes = fechaActual.getMonthValue();
-        System.out.println("Mes extraído: " + mes);
         objetoMovimiento.setNombreUsuario(usuario);
         
         String[] cabecera={"ID","Fecha","Razon","Monto","Tipo"};
         dtm.setColumnIdentifiers(cabecera);
         tblTransacciones.setModel(dtm);
         
-        List<Clases.MovimientoFinanciero> transacciones = objetoMovimiento.cargarInfoDesdeArchivoMes(mes);
+        transacciones = objetoMovimiento.cargarInfoDesdeArchivoMes(mes);
         
         List<Clases.MovimientoFinanciero> ingresos = transacciones.stream()
                 .filter(t -> t.getTipo().equals("ingreso"))
                 .collect(Collectors.toList());
         
-        objetoGraficaIngresos.setTipo("Ingresos");
-        
-        JPanel chartPanelIngresos = (JPanel) objetoGraficaIngresos.generarGrafico(ingresos);
+        JPanel chartPanelIngresos = (JPanel) objetoGraficaIngresos.generarGrafico(ingresos, "Ingresos");
         chartPanelIngresos.setPreferredSize(new java.awt.Dimension(176, 190)); 
 
 
@@ -58,9 +56,7 @@ public class formMenuPrincipal extends javax.swing.JFrame {
                 .filter(t -> t.getTipo().equals("egreso"))
                 .collect(Collectors.toList());
         
-        objetoGraficaEgresos.setTipo("Egresos");
-        
-        JPanel chartPanelEgresos = (JPanel) objetoGraficaEgresos.generarGrafico(egresos);
+        JPanel chartPanelEgresos = (JPanel) objetoGraficaEgresos.generarGrafico(egresos, "Egresos");
         chartPanelEgresos.setPreferredSize(new java.awt.Dimension(176, 190)); 
 
 
@@ -99,10 +95,12 @@ public class formMenuPrincipal extends javax.swing.JFrame {
         pnlEgresos = new javax.swing.JPanel();
         pnlIngresos = new javax.swing.JPanel();
         btnAyuda = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
-        btnAñadir = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        btnMenuPrincipal1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        btnAñadir1 = new javax.swing.JButton();
+        btnCerrarSesion1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -152,12 +150,20 @@ public class formMenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/excel.png"))); // NOI18N
+        jButton1.setBorderPainted(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(108, Short.MAX_VALUE)
+                .addContainerGap(78, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -166,7 +172,8 @@ public class formMenuPrincipal extends javax.swing.JFrame {
                                 .addGap(100, 100, 100)
                                 .addComponent(pnlEgresos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnAyuda)))
@@ -182,45 +189,67 @@ public class formMenuPrincipal extends javax.swing.JFrame {
                     .addComponent(pnlEgresos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlIngresos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(111, 128, 196));
+        jPanel4.setBackground(new java.awt.Color(111, 128, 196));
 
-        jButton5.setText("Principal");
-
-        btnModificar.setText("Cambiar");
-        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+        btnMenuPrincipal1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/home.png"))); // NOI18N
+        btnMenuPrincipal1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarActionPerformed(evt);
+                btnMenuPrincipal1ActionPerformed(evt);
             }
         });
 
-        btnAñadir.setText("Añadir ");
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/change.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAñadir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(29, Short.MAX_VALUE))
+        btnAñadir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/add.png"))); // NOI18N
+        btnAñadir1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAñadir1ActionPerformed(evt);
+            }
+        });
+
+        btnCerrarSesion1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/off.png"))); // NOI18N
+        btnCerrarSesion1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesion1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnMenuPrincipal1, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAñadir1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCerrarSesion1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(159, 159, 159)
-                .addComponent(jButton5)
+                .addComponent(btnMenuPrincipal1)
                 .addGap(18, 18, 18)
-                .addComponent(btnModificar)
+                .addComponent(jButton4)
                 .addGap(18, 18, 18)
-                .addComponent(btnAñadir)
-                .addContainerGap(411, Short.MAX_VALUE))
+                .addComponent(btnAñadir1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCerrarSesion1)
+                .addGap(57, 57, 57))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -228,33 +257,59 @@ public class formMenuPrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Clases.ArchivoExcel objetoExcel = new Clases.ArchivoExcel();
+        objetoExcel.crearArchivo(transacciones);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
         JOptionPane.showMessageDialog(this, "En esta pestaña podras observar lo siguiente:\n"
             + "1. La grafica a la izquirda representa los ingresos del mes\n"
             + "2. La grafica a la derecha representa los egresos del mes\n"
-            + "3. La tabla inferiror muestra los datos tanto de los egresos como ingresos",
+            + "3. La tabla inferiror muestra los datos tanto de los egresos como ingresos\n"
+            + "4. El boton al lado de la tabla te permite descargar un excel de los movimientos del mes",
             "Ayuda", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnAyudaActionPerformed
 
-    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        formModificacion objetoModificar = new formModificacion(NombreUsuario);
-        objetoModificar.setVisible(true);
+    private void btnMenuPrincipal1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuPrincipal1ActionPerformed
+        formMenuPrincipal objetoMenu = new formMenuPrincipal(NombreUsuario);
+        objetoMenu.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_btnModificarActionPerformed
+    }//GEN-LAST:event_btnMenuPrincipal1ActionPerformed
+
+    private void btnAñadir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadir1ActionPerformed
+        formAgregar objetoAgregar = new formAgregar(NombreUsuario);
+        objetoAgregar.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAñadir1ActionPerformed
+
+    private void btnCerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesion1ActionPerformed
+        JOptionPane.showMessageDialog(this, "Cerrando Sesion...", "Saliendo", JOptionPane.INFORMATION_MESSAGE);
+
+        FormLogin objetoLogin = new FormLogin();
+        objetoLogin.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCerrarSesion1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        formModificacion objetoMod = new formModificacion(NombreUsuario);
+        objetoMod.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,14 +349,16 @@ public class formMenuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAyuda;
     private javax.swing.JButton btnAñadir;
-    private javax.swing.JButton btnModificar;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnAñadir1;
+    private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JButton btnCerrarSesion1;
+    private javax.swing.JButton btnMenuPrincipal;
+    private javax.swing.JButton btnMenuPrincipal1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlEgresos;

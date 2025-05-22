@@ -146,8 +146,11 @@ public class FormSignUp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Clases.MovimientoFinanciero mov = new Clases.MovimientoFinanciero();
+        mov.setNombreUsuario(txtNuevoUsuario.getText());
+        
         Clases.CManejoArchivos objetoRegistro = new Clases.CManejoArchivos();
-        objetoRegistro.setNombreUsuario(txtNuevoUsuario.getText());
+        objetoRegistro.setMovimiento(mov);
         objetoRegistro.validarUsuarioExistente(txtNuevaContraseña, this);
     }//GEN-LAST:event_jButton1ActionPerformed
 

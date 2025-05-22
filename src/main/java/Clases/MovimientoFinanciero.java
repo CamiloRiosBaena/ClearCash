@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 public class MovimientoFinanciero extends Transaccion {
     private String tipo;
@@ -38,6 +40,16 @@ public class MovimientoFinanciero extends Transaccion {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+    
+    public void MostrarInfo(JTextPane panel){
+        if(panel == null){
+            panel.setText("Monto: "+super.monto+"\n"+"Razon: "+super.razon+"\n"+"Fecha: "+super.getFecha()+"\n"+tipo+"\n\n");
+        }
+        else{
+            String cadena = panel.getText();
+            panel.setText(cadena + "Monto: "+super.monto+"\n"+"Razon: "+super.razon+"\n"+"Fecha: "+super.getFecha()+"\n"+tipo+"\n\n");
+        }
     }
       
     public List<MovimientoFinanciero> cargarInfoDesdeArchivoMes(int mes) {
