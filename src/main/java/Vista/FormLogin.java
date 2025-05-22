@@ -4,6 +4,9 @@
  */
 package Vista;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
+
 /**
  *
  * @author Camilo Rios
@@ -12,6 +15,10 @@ public class FormLogin extends javax.swing.JFrame {
             
     public FormLogin() {
         initComponents();
+        jButton1.setFocusPainted(false);
+        jButton1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        jButton2.setFocusPainted(false);
+        jButton2.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
     }
  
     /**

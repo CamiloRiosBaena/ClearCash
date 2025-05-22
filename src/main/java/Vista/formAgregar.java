@@ -4,9 +4,14 @@
  */
 package Vista;
 
+import java.awt.Color;
+import java.awt.Image;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,6 +25,36 @@ public class formAgregar extends javax.swing.JFrame {
     public formAgregar(String usuario) {
         initComponents();
         NombreUsuario = usuario;
+        txtUsuario.setText(usuario);
+        String Img = "src/main/resources/Imagenes/" + usuario.toLowerCase() + ".png";
+        File archivo = new File(Img);
+        if (archivo.exists()) {
+            ImageIcon icon = new ImageIcon(Img);
+            Image img = icon.getImage();
+            lblIcono.setIcon(new ImageIcon(img));
+        }
+        else{
+            ImageIcon icon = new ImageIcon("src/main/resources/Imagenes/default.png");
+            Image img = icon.getImage();
+            lblIcono.setIcon(new ImageIcon(img));
+        }
+        //eliminar bordes a los botones
+        btnMenuPrincipal1.setFocusPainted(false);
+        btnMenuPrincipal1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        jButton4.setFocusPainted(false);
+        jButton4.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnAñadir1.setFocusPainted(false);
+        btnAñadir1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnAgregar.setFocusPainted(false);
+        btnAgregar.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnCerrarSesion1.setFocusPainted(false);
+        btnCerrarSesion1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnAyuda.setFocusPainted(false);
+        btnAyuda.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        //agrega textos alternativos
+        btnMenuPrincipal1.setToolTipText("Inicio");
+        jButton4.setToolTipText("Modificar y eliminar gastos");
+        btnAñadir1.setToolTipText("Agregar gastos");
     }
 
     /**
@@ -49,6 +84,8 @@ public class formAgregar extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         btnAñadir1 = new javax.swing.JButton();
         btnCerrarSesion1 = new javax.swing.JButton();
+        lblIcono = new javax.swing.JLabel();
+        txtUsuario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -186,6 +223,12 @@ public class formAgregar extends javax.swing.JFrame {
             }
         });
 
+        lblIcono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        txtUsuario.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtUsuario.setText("jLabel1");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -197,18 +240,28 @@ public class formAgregar extends javax.swing.JFrame {
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAñadir1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCerrarSesion1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                    .addComponent(lblIcono, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                .addGap(14, 14, 14))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(159, 159, 159)
+                .addContainerGap()
+                .addComponent(lblIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtUsuario)
+                .addGap(47, 47, 47)
                 .addComponent(btnMenuPrincipal1)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
                 .addGap(18, 18, 18)
                 .addComponent(btnAñadir1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
                 .addComponent(btnCerrarSesion1)
                 .addGap(57, 57, 57))
         );
@@ -341,11 +394,13 @@ public class formAgregar extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblIcono;
     private javax.swing.JLabel lblMonto;
     private javax.swing.JLabel lblRazon;
     private javax.swing.JLabel lblTipo;
     private javax.swing.JTextPane txpPantalla;
     private javax.swing.JTextField txtMonto;
     private javax.swing.JTextField txtRazon;
+    private javax.swing.JLabel txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

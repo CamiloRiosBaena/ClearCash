@@ -4,11 +4,16 @@
  */
 package Vista;
 
+import java.awt.Color;
+import java.awt.Image;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,6 +33,38 @@ public class formModificacion extends javax.swing.JFrame {
         initComponents();
         
         NombreUsuario = usuario;
+        txtUsuario.setText(usuario);
+        String Img = "src/main/resources/Imagenes/" + usuario.toLowerCase() + ".png";
+        File archivo = new File(Img);
+        if (archivo.exists()) {
+            ImageIcon icon = new ImageIcon(Img);
+            Image img = icon.getImage();
+            lblIcono.setIcon(new ImageIcon(img));
+        }
+        else{
+            ImageIcon icon = new ImageIcon("src/main/resources/Imagenes/default.png");
+            Image img = icon.getImage();
+            lblIcono.setIcon(new ImageIcon(img));
+        }
+        //eliminar bordes a los botones
+        btnMenuPrincipal.setFocusPainted(false);
+        btnMenuPrincipal.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        jButton3.setFocusPainted(false);
+        jButton3.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnAñadir.setFocusPainted(false);
+        btnAñadir.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        jButton1.setFocusPainted(false);
+        jButton1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnActualizar.setFocusPainted(false);
+        btnActualizar.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnCerrarSesion.setFocusPainted(false);
+        btnCerrarSesion.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnAyuda.setFocusPainted(false);
+        btnAyuda.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        //agrega textos alternativos
+        btnMenuPrincipal.setToolTipText("Inicio");
+        jButton3.setToolTipText("Modificar y eliminar gastos");
+        btnAñadir.setToolTipText("Agregar gastos");
         
         LocalDate fechaActual = LocalDate.now();
         int mes = fechaActual.getMonthValue();
@@ -152,6 +189,8 @@ public class formModificacion extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         btnAñadir = new javax.swing.JButton();
         btnCerrarSesion = new javax.swing.JButton();
+        lblIcono = new javax.swing.JLabel();
+        txtUsuario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -305,29 +344,46 @@ public class formModificacion extends javax.swing.JFrame {
             }
         });
 
+        lblIcono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        txtUsuario.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtUsuario.setText("jLabel1");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnMenuPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAñadir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnMenuPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAñadir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(159, 159, 159)
+                .addContainerGap()
+                .addComponent(lblIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtUsuario)
+                .addGap(47, 47, 47)
                 .addComponent(btnMenuPrincipal)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
                 .addGap(18, 18, 18)
                 .addComponent(btnAñadir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
                 .addComponent(btnCerrarSesion)
                 .addGap(57, 57, 57))
         );
@@ -465,11 +521,13 @@ public class formModificacion extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblIcono;
     private javax.swing.JLabel lblMonto;
     private javax.swing.JLabel lblRazon;
     private javax.swing.JLabel lblTipo;
     private javax.swing.JTable tblTransacciones;
     private javax.swing.JTextField txtMonto;
     private javax.swing.JTextField txtRazon;
+    private javax.swing.JLabel txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

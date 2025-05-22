@@ -4,9 +4,14 @@
  */
 package Vista;
 
+import java.awt.Color;
+import java.awt.Image;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -28,6 +33,35 @@ public class formMenuPrincipal extends javax.swing.JFrame {
         initComponents();
         
         NombreUsuario = usuario;
+        //agrega icono
+        txtUsuario.setText(usuario);
+        String Img = "src/main/resources/Imagenes/" + usuario.toLowerCase() + ".png";
+        File archivo = new File(Img);
+        if (archivo.exists()) {
+            ImageIcon icon = new ImageIcon(Img);
+            Image img = icon.getImage();
+            lblIcono.setIcon(new ImageIcon(img));
+        }
+        else{
+            ImageIcon icon = new ImageIcon("src/main/resources/Imagenes/default.png");
+            Image img = icon.getImage();
+            lblIcono.setIcon(new ImageIcon(img));
+        }
+        //eliminar bordes a los botones
+        btnMenuPrincipal1.setFocusPainted(false);
+        btnMenuPrincipal1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        jButton4.setFocusPainted(false);
+        jButton4.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnAñadir1.setFocusPainted(false);
+        btnAñadir1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnCerrarSesion1.setFocusPainted(false);
+        btnCerrarSesion1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        btnAyuda.setFocusPainted(false);
+        btnAyuda.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        //agrega textos alternativos
+        btnMenuPrincipal1.setToolTipText("Inicio");
+        jButton4.setToolTipText("Modificar y eliminar gastos");
+        btnAñadir1.setToolTipText("Agregar gastos");
         
         LocalDate fechaActual = LocalDate.now();
         int mes = fechaActual.getMonthValue();
@@ -101,9 +135,10 @@ public class formMenuPrincipal extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         btnAñadir1 = new javax.swing.JButton();
         btnCerrarSesion1 = new javax.swing.JButton();
+        lblIcono = new javax.swing.JLabel();
+        txtUsuario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(141, 158, 229));
@@ -225,29 +260,46 @@ public class formMenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        lblIcono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        txtUsuario.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtUsuario.setText("jLabel1");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnMenuPrincipal1, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAñadir1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCerrarSesion1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnMenuPrincipal1, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAñadir1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnCerrarSesion1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(159, 159, 159)
+                .addContainerGap()
+                .addComponent(lblIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtUsuario)
+                .addGap(47, 47, 47)
                 .addComponent(btnMenuPrincipal1)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
                 .addGap(18, 18, 18)
                 .addComponent(btnAñadir1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
                 .addComponent(btnCerrarSesion1)
                 .addGap(57, 57, 57))
         );
@@ -348,21 +400,18 @@ public class formMenuPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAyuda;
-    private javax.swing.JButton btnAñadir;
     private javax.swing.JButton btnAñadir1;
-    private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnCerrarSesion1;
-    private javax.swing.JButton btnMenuPrincipal;
     private javax.swing.JButton btnMenuPrincipal1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblIcono;
     private javax.swing.JPanel pnlEgresos;
     private javax.swing.JPanel pnlIngresos;
     private javax.swing.JTable tblTransacciones;
+    private javax.swing.JLabel txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
