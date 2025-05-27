@@ -36,4 +36,22 @@ public class GraficadorCircular {
 
             return new ChartPanel(chart);
           }  
+          
+         public JPanel generarGraficoBalance(double totalIngresos, double totalEgresos) {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        
+        dataset.setValue("Ingresos", totalIngresos);
+        dataset.setValue("Egresos", totalEgresos);
+        
+        JFreeChart chart = ChartFactory.createPieChart(
+            "Balance Ingresos vs Egresos",
+            dataset,
+            true,
+            false,
+            false
+        );
+        
+        return new ChartPanel(chart);
+    }
+ 
 }

@@ -1,0 +1,5 @@
+1|20-05-2025|comida|500000.0|ingreso
+2|29-05-2025|carro|500000.0|ingreso
+3|29-05-2025|Camion|500000.0|egreso
+4|29-05-2025|putas|500000.0|egreso
+5|15-05-2025|bote|500000.0|egreso
