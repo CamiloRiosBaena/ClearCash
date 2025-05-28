@@ -15,8 +15,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
 public class ArchivoExcel {
+    
+    private String home = System.getProperty("user.home");
+    
     public void crearArchivo(List<MovimientoFinanciero> transacciones){
-        String home = System.getProperty("user.home");
         
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Movimientos");
